@@ -38,3 +38,16 @@ jobs:
           healthcheck: https://afternoon-shelf-68870.herokuapp.com/health
           checkstring: ok
           rollbackonhealthcheckfailed: true
+  tagging:
+    needs: simple_deployment_pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - name: github tag
+        if: ${{ github.event_name == 'push' }}
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          DRY_RUN: true
+
